@@ -17,12 +17,17 @@ pipeline {
                     withSonarQubeEnv('sonarqube') {
                         sh "${scannerHome}/bin/sonar-scanner \
                             -Dsonar.login=squ_2e5fb188c81da23c0d10bdd716452d9a1bf1f401 \
-                            -Dsonar.projectKey=School23 \
+                            -Dsonar.projectKey=School \
                             -Dsonar.exclusions=vendor/**,resources/**,**/*.java \
                             -Dsonar.sources=/var/lib/jenkins/workspace/Operations2023/src \
-                            -Dsonar.host.url=http://18.208.248.57:9000"        
+                            -Dsonar.host.url=http://172.31.26.120:9000"
                     }
                 }
+            }
+        }
+        stage('SonarQube QG status') {
+            steps {
+               echo 'code analysis was successful'
             }
         }
         stage('Continuous build') {
@@ -30,14 +35,34 @@ pipeline {
                sh 'mvn clean package'
             }
         }
+        stage('continous deployment') {
+            steps {
+               deploy adapters: [tomcat9(credentialsId: 'Devcredentials', path: '', url:'http://172.31.94.205:8080')], contextPath: 'qaenv', war: '**/*.war'
+            }
+        }
         stage('Continuous testing') {
             steps {
                 echo 'testing was successful'
             }
         }
-        stage('continous deployment') {
+        stage('deploy artifact') {
             steps {
-               deploy adapters: [tomcat9(credentialsId: '19c73ccc-154b-43db-9320-7d28507070c2', path: '', url: 'http://172.31.94.205:8080')], contextPath: 'qaenv', war: '**/*.war'
+                nexusArtifactUploader artifacts: [
+                        [
+                            artifactid: 'tt.test', 
+                            classifier: '', 
+                            file: '/var/lib/jenkins/workspace/Operations23/target/tt.test.war', 
+                            type: 'war'
+                        ]
+                    ], 
+                    credentialsid: 'nexus', 
+                    groupld: 'com.tt', 
+                    nexusUrl: '54.91.82.201:8081',
+                    nexusVersion: 'nexus3', 
+                    protocol: 'http', 
+                    repository: 'Operations23', 
+                    version: '*1.0-SNAPSHOT'
+                
             }
         }
         stage('continous dlivery') {
