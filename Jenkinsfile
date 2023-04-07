@@ -16,13 +16,11 @@ pipeline {
                     def scannerHome = tool 'sonarqube';
                     withSonarQubeEnv('sonarqube') {
                         sh "${scannerHome}/bin/sonar-scanner \
-                            -D sonar.login=admin \
-                            -D sonar.password=Operations23 \
-                            -D sonar.projectKey=School23 \
-                            -D sonar.exclusions=vendor/**,resources/**,**/*.java \
-                            -D sonar.sources=/var/lib/jenkins/workspace/scripted/src \
-                            -D sonar.host.url=http://172.31.26.120:9000"
-                        
+                            -Dsonar.login=squ_2e5fb188c81da23c0d10bdd716452d9a1bf1f401 \
+                            -Dsonar.projectKey=School23 \
+                            -Dsonar.exclusions=vendor/**,resources/**,**/*.java \
+                            -Dsonar.sources=/var/lib/jenkins/workspace/Operations2023/src \
+                            -Dsonar.host.url=http://18.208.248.57:9000"        
                     }
                 }
             }
