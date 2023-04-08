@@ -71,7 +71,33 @@ pipeline {
                 deploy adapters: [tomcat9(credentialsId: 'Prodcredentials', path: '', url: 'http://172.31.93.91:8080')], contextPath: 'prodenv', war: '**/*.war'
             }
         }
-        
-        
+        stage( 'Post-Build Notification') {
+            steps {
+                script {
+                    def status = currentBuild.currentResult
+                    def message = "Build ${status}: Job '$ {env. JOB_NAME} [$ {env.BUILD_NUMBER}]'" 
+                    slackSend (
+                        channel: 'operation2023',
+                        color: status == 'SUCCESS' ? 'good' : 'danger' ,
+                        message: message, 
+                        tokenCredentialId: 'slack'
+                    )
+                }
+            }
+        }    
+    
+    }
+    post {
+        always {
+            script {
+                slacksend (
+                    channel: 'operation2023',
+                    color: currentBuild.currentResult == 'SUCCESS' ? 'good' : 'danger',
+                    message: "Build ${currentBuild.currentResult}: Job '$ {env.JOB_NAME} [${env.BUILD_NUMBER}]'"
+                    message: "Build ${status}:Job '$ {env.JOB_NAME} [${env.BUILD_NUMBER}]'", 
+                    tokenCredentialId: 'slack'
+                )
+            }
+        }
     }
 }

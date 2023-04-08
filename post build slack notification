@@ -1,0 +1,38 @@
+
+stages {
+    stage("Download artifact from Nexus") {
+        steps {
+            sh 'wget --user=admin --password=Operations23 http://3.86.148.53:8081/repository/Operations2023/com/tt/tt.test/1.0-SNAPSHOT/tt.test-1.0-20230408.024443-6.war'
+        }
+    }
+
+
+    stage( 'Post-Build Notification') {
+        steps {
+            script {
+                def status = currentBuild.currentResult
+                def message = "Build ${status}: Job '$ {env. JOB_NAME} [$ {env.BUILD_NUMBER}]'" 
+                slackSend (
+                    channel: 'operation2023',
+                    color: status == 'SUCCESS' ? 'good' : 'danger' ,
+                    message: message, 
+                    tokenCredentialId: 'slack'
+                )
+            }
+        }
+    }    
+    post {
+        always {
+            script {
+                slacksend (
+                    channel: 'operation2023',
+                    color: currentBuild.currentResult == 'SUCCESS' ? 'good' : 'danger',
+                    message: "Build ${currentBuild.currentResult}: Job '$ {env.JOB_NAME} [${env.BUILD_NUMBER}]'",
+                    message: "Build ${status}:Job '$ {env.JOB_NAME} [${env.BUILD_NUMBER}]'", 
+                    tokenCredentialId: 'slack'
+                )
+            }
+        }
+    }
+
+
