@@ -1,6 +1,6 @@
 <html>
 <body>
-<h2>Hello! Welcome to University of Texas</h2>
+<h2>Hello! Welcome to University of Michigan</h2>
 <h2>We will take you from zero to engineer as you sit in the comfort of your home</h2>
 
 
@@ -75,6 +75,7 @@ Course :
 <option value="GRAFANA">GRAFANA</option> 
 <option value="PROMETHEUS">PROMETHEUS</option> 
 <option value="KUBENERTES">KUBENERTES</option>  
+<option value="TERRAFORM">KUBENERTES</option> 
 </select>  
 </div>  
 <div>  
