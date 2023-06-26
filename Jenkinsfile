@@ -7,7 +7,7 @@ pipeline {
     stages {
         stage('Continuous download') {
             steps {
-                git branch: 'main', credentialsId: 'classicstan', url: 'https://github.com/classicstan/School-webapp.git'
+                git branch: 'main', credentialsId: 'nicolasmill', url: 'https://github.com/nicolasmill/Student-login-CI-CD.git'
             }
         }
         stage ('SonarQube Analysis') {
@@ -19,8 +19,8 @@ pipeline {
                             -Dsonar.login=squ_2e5fb188c81da23c0d10bdd716452d9a1bf1f401 \
                             -Dsonar.projectKey=School \
                             -Dsonar.exclusions=vendor/**,resources/**,**/*.java \
-                            -Dsonar.sources=/var/lib/jenkins/workspace/Operations2023/src \
-                            -Dsonar.host.url=http://172.31.26.120:9000"
+                            -Dsonar.sources=/var/lib/jenkins/workspace/Startup/src \
+                            -Dsonar.host.url=http://52.23.234.122:9000"
                     }
                 }
             }
