@@ -37,7 +37,7 @@ pipeline {
         }
         stage('continous deployment') {
             steps {
-               deploy adapters: [tomcat9(credentialsId: 'tomcat-access', path: '', url:'http://10.0.1.99:8080')], contextPath: 'qaenv', war: '**/*.war'
+               deploy adapters: [tomcat9(credentialsId: 'tomcat-access', path: '', url:'http://10.0.1.17:8080')], contextPath: 'qaenv', war: '**/*.war'
             } 
         }
         stage('Continuous testing') {
