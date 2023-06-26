@@ -16,15 +16,15 @@ pipeline {
                     def scannerHome = tool 'sonarqube';
                     withSonarQubeEnv('sonarqube') {
                         sh "${scannerHome}/bin/sonar-scanner \
-                            -Dsonar.login=squ_2e5fb188c81da23c0d10bdd716452d9a1bf1f401 \
-                            -Dsonar.projectKey=School \
+                            -Dsonar.login=sqa_46658063ff3a1485975d6873c4f77a09fbcf0ac4 \
+                            -Dsonar.projectKey=Sonar_Startup_2 \
                             -Dsonar.exclusions=vendor/**,resources/**,**/*.java \
                             -Dsonar.sources=/var/lib/jenkins/workspace/Startup/src \
-                            -Dsonar.host.url=http://52.23.234.122:9000"
+                            -Dsonar.host.url=http://10.0.1.74:9000"
                     }
                 }
             }
-        }
+        } 
         stage('SonarQube QG status') {
             steps {
                echo 'code analysis was successful'
@@ -37,7 +37,7 @@ pipeline {
         }
         stage('continous deployment') {
             steps {
-               deploy adapters: [tomcat9(credentialsId: 'Devcredentials', path: '', url:'http://172.31.94.205:8080')], contextPath: 'qaenv', war: '**/*.war'
+               deploy adapters: [tomcat9(credentialsId: 'Dev', path: '', url:'http://3.87.252.234:8080')], contextPath: 'qaenv', war: '**/*.war'
             }
         }
         stage('Continuous testing') {
@@ -45,7 +45,7 @@ pipeline {
                 echo 'testing was successful'
             }
         }
-        stage('deploy artifact') {
+        /*stage('deploy artifact') {
             steps {
                 nexusArtifactUploader artifacts: [
                         [
@@ -67,11 +67,11 @@ pipeline {
         }
         stage('continous dlivery') {
             steps {
-                input message: 'are you authorized to run this job?', submitter: 'stanley'
-                deploy adapters: [tomcat9(credentialsId: 'Prodcredentials', path: '', url: 'http://172.31.93.91:8080')], contextPath: 'prodenv', war: '**/*.war'
-            }
-        }
-        stage( 'Post-Build Notification') {
+                input message: 'are you authorized to run this job?', submitter: 'stanley' */
+               // deploy adapters: [tomcat9(credentialsId: 'Prodcredentials', path: '', url: 'http://172.31.93.91:8080')], contextPath: 'prodenv', war: '**/*.war'
+       //     }
+      //  }
+       /* stage( 'Post-Build Notification') {
             steps {
                 script {
                     def status = currentBuild.currentResult
@@ -101,3 +101,4 @@ pipeline {
         }
     }
 }
+*/
