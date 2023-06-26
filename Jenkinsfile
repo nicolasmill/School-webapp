@@ -45,7 +45,7 @@ pipeline {
                 echo 'testing was successful'
             }
         }
-        /*stage('deploy artifact') {
+        /* stage('deploy artifact') {
             steps {
                 nexusArtifactUploader artifacts: [
                         [
